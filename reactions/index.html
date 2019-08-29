@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reaction Widgets</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {% load static %}
+	<link rel="stylesheet" href="{% static "reactions/main.css" %}"></link>
+	{% csrf_token %}
+
+	<script>
+	function myFunction(elem){
+
+           name = elem.value
+           $.post("",
+           {
+             data:name,
+             csrfmiddlewaretoken:$('[name=csrfmiddlewaretoken]').val(),
+           },
+           function(data,status){
+              if (data == "already_commented") {
+                  alert("You have commented before");}
+              else{
+                   document.getElementsByClassName(name)[0].innerHTML = data.count;
+                   document.getElementById("total_responses").innerHTML = data.total_responses
+              }
+
+
+           }
+           )
+
+	}
+
+	</script>
+
+  </head>
+  <body>
+    <h4 class = "header1">What do you think?</h4>
+    <div id="reaction-items">
+       {% csrf_token %}
+	  <div id = "total_responses"> {{total_responses}} </div>
+	  <button class="button" value = "upvote" onclick="myFunction(this)">
+	     <img src = "{% static "reactions/upvote-512x512.png" %}">
+		 <div class="reaction-item__text">Upvote</div>
+	  </button>
+	  <button class="button" value = "funny" onclick="myFunction(this)">
+	     <img src = "{% static "reactions/funny-512x512.png" %}">
+		 <div class="reaction-item__text">Funny</div>
+	  </button>
+      <button class="button" value = "love" onclick="myFunction(this)">
+	    <img src = "{% static "reactions/love-512x512.png" %}">
+		<div class="reaction-item__text">Love</div>
+	  </button>
+	</div>
+	<div id="number_of_responses">
+	    <div class = "responses upvote"> {{upvotes}} </div>
+		<div class = "responses funny"> {{funny}}  </div>
+		<div class = "responses love"> {{love}}   </div>
+	</div>
+
+
+
+
+
+  </body>
+</html>
